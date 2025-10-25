@@ -16,7 +16,7 @@ df_expand = df.assign(Pos_jug = df['Pos'].str.split(',\s*')).explode('Pos_jug')
 df_expand['Pos'] = df_expand['Pos'].str.strip()
 df_expand
 
-#1.- ANALISIS DEFENSORES - DEF
+#1.- ANALISIS DEFENSORES - DEF.
 
 #Se realizó un análisis exploratorio general con el propósito de obtener una visión inicial sobre la participación de los defensores 
 #durante la temporada 2024-2025. Este análisis incluyó la elaboración de varios gráficos descriptivos que permitieron observar, por un lado, 
@@ -901,6 +901,7 @@ def radar_top6_def_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6
 
 #Ejecución para analizar la última temporada correspondiente a 2024-2025.
 radar_top6_def_squad(df_expand, season='2024-2025', squad='Barcelona', minutos_minimos=1026, top_n=6)
+
 
 
 
