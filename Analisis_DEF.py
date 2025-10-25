@@ -7,7 +7,7 @@ import plotly.express as px
 
 #Se realiza un primer analisis global y profundo sobre los jugadores que juegan como posicion principal o secundaria de defensor.
 
-df = pd.read_excel("C:\\Users\\marce\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
+df = pd.read_excel("C:\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
 df.head()
 df.columns
 
@@ -445,8 +445,7 @@ def df_stats_disc(df_expand, season, minutos_minimos=1026, top_n=10, mostrar_plo
     ].copy()
     
     defensas.columns = defensas.columns.str.strip()
-
-    # Métricas de disciplina
+  
     metricas = {
         'Total faltas' : lambda d: d['Fls'],
         'Total tarjetas amarillas' : lambda d: d['CrdY'],
@@ -474,7 +473,6 @@ def df_stats_disc(df_expand, season, minutos_minimos=1026, top_n=10, mostrar_plo
         sns.set_context('talk')
         color_barras = '#E30613'
 
-        # Gráfico
         if mostrar_plots:
             plt.figure(figsize=(8,5))
             sns.barplot(
@@ -503,7 +501,7 @@ def df_stats_disc(df_expand, season, minutos_minimos=1026, top_n=10, mostrar_plo
 df_stats_disc(df_expand, season='2024-2025', minutos_minimos=1026, top_n=10, mostrar_plots=True)
 
 def df_stats_disc_squad(df_expand, season, squad, minutos_minimos=1026, mostrar_plots=True):
-    # Filtrar defensas de la temporada
+    
     defensas = df_expand[
         (df_expand['Season'] == season) &
         (df_expand['Pos_jug'].str.lower().str.contains('df'))&
@@ -518,7 +516,6 @@ def df_stats_disc_squad(df_expand, season, squad, minutos_minimos=1026, mostrar_
 
     defensas['Relevante_30%_temporada'] = defensas['Min'] >= minutos_minimos
 
-    # Métricas de disciplina
     metricas = {
         'Total faltas' : lambda d: d['Fls'],
         'Total tarjetas amarillas' : lambda d: d['CrdY'],
@@ -627,7 +624,6 @@ def df_stats_of(df_expand, season, minutos_minimos=1026, top_n = 10, mostrar_plo
         sns.set_context('talk')
         color_barras = '#E30613'
 
-        # Gráfico con estética profesional
         if mostrar_plots:
             plt.figure(figsize=(8,5))
             sns.barplot(
@@ -695,7 +691,6 @@ def df_stats_of_squad(df_expand, season, squad, minutos_minimos=1026, mostrar_pl
         
         resultados[nombre_metrica] = top_mejores
 
-        # Gráfico con estética profesional
         if mostrar_plots:
             plt.figure(figsize=(8,5))
 
@@ -752,23 +747,19 @@ def radar_top6_def(df_expand, season, minutos_minimos=1026, top_n=6):
     
     categorias = ['TklW', 'Tkl-Dri%', 'Blocks','Int','Clr','Aerial%']
     
-    # Normalizar métricas
     scaler = MinMaxScaler()
     df_temp[categorias] = scaler.fit_transform(df_temp[categorias])
 
-    # Puntaje total
     df_temp['total_score'] = df_temp[categorias].sum(axis=1)
 
     df_temp = df_temp.sort_values(by='total_score', ascending=False).reset_index(drop=True)
     df_temp['rank'] = df_temp.index + 1
     
-    # Mostrar tabla
     tabla_ranking = df_temp[['rank', 'Player', 'Squad', 'Min', 'total_score'] + categorias].copy()
     pd.set_option('display.float_format', '{:,.3f}'.format)
     print("\n=== TOP DEFENSAS — RANKING ===\n")
     print(tabla_ranking.head(top_n).to_string(index=False))
 
-    # Seleccionar top defensas
     top_defensas = df_temp.sort_values(by='total_score', ascending=False).head(top_n)
 
     N = len(categorias)
@@ -783,7 +774,6 @@ def radar_top6_def(df_expand, season, minutos_minimos=1026, top_n=6):
     fig, axes = plt.subplots(n_rows, n_cols, figsize=(4*n_cols, 4*n_rows), subplot_kw=dict(polar=True))
     axes = np.atleast_1d(axes).flatten()
     
-    # Colores automáticos
     cmap= plt.cm.get_cmap('tab10', top_n)
     color_list = [cmap(i) for i in range(top_n)]
     
@@ -820,7 +810,7 @@ def radar_top6_def(df_expand, season, minutos_minimos=1026, top_n=6):
 radar_top6_def(df_expand, season='2024-2025', minutos_minimos=1026, top_n=6)
 
 def radar_top6_def_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6):
-    # Filtrar por temporada, posición y minutos
+    
     defensas = df_expand[
         (df_expand['Season'] == season) &
         df_expand['Pos_jug'].str.lower().str.contains('df')
@@ -834,7 +824,6 @@ def radar_top6_def_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6
 
     categorias = ['TklW', 'Tkl-Dri%', 'Blocks','Int','Clr','Aerial-W']
     
-    # Normalizar métricas
     scaler = MinMaxScaler()
     defensas[categorias] = scaler.fit_transform(defensas[categorias])
 
@@ -844,19 +833,16 @@ def radar_top6_def_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6
         print(f"No hay defensas relevantes para el equipo {squad} en la temporada {season}.")
         return
 
-    # Puntaje total
     df_temp['total_score'] = df_temp[categorias].sum(axis=1)
 
     df_temp = df_temp.sort_values(by='total_score', ascending=False).reset_index(drop=True)
     df_temp['rank'] = df_temp.index + 1
     
-    # Mostrar tabla
     tabla_ranking = df_temp[['rank', 'Player', 'Squad', 'Min', 'total_score'] + categorias].copy()
     pd.set_option('display.float_format', '{:,.3f}'.format)
     print("\n=== TOP DEFENSAS — RANKING ===\n")
     print(tabla_ranking.head(top_n).to_string(index=False))
 
-    # Seleccionar top defensas
     top_defensas = df_temp.sort_values(by='total_score', ascending=False).head(top_n)
 
     N = len(categorias)
@@ -915,6 +901,7 @@ def radar_top6_def_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6
 
 #Ejecución para analizar la última temporada correspondiente a 2024-2025.
 radar_top6_def_squad(df_expand, season='2024-2025', squad='Barcelona', minutos_minimos=1026, top_n=6)
+
 
 
 
