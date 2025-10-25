@@ -78,7 +78,7 @@ def fw_stats_global(df_expand, season, min_col='Min', top_teams=20, mostrar_plot
     print(distrib_team.head(top_teams).to_string(index=False))
 
     if mostrar_plots:
-        # Gráfico 1: Barras defensores únicos por equipo
+        
         TopN = distrib_team.head(top_teams)
         plt.figure(figsize=(10,6))
         bars = plt.bar(TopN['Squad'], TopN['delanteros_unicos'], color='#E30613')
@@ -88,14 +88,12 @@ def fw_stats_global(df_expand, season, min_col='Min', top_teams=20, mostrar_plot
         plt.ylabel('Delanteros', fontsize=12)
         plt.title(f'Delanteros únicos por equipo — Temporada {season}', fontweight='bold', color='#333333')
 
-        # Etiquetas de valores
         for bar in bars:
             plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1,
                      f"{int(bar.get_height())}", ha='center', va='bottom', fontsize=10)
         plt.tight_layout()
         plt.show()
 
-        # Gráfico 2: Histograma minutos
         if min_col in delantero.columns:
             plt.figure(figsize=(8, 5))
             sns.histplot(delantero[min_col], bins=30, color='#E30613', edgecolor='#333333')
@@ -107,7 +105,6 @@ def fw_stats_global(df_expand, season, min_col='Min', top_teams=20, mostrar_plot
             plt.tight_layout()
             plt.show()
 
-            # Gráfico 3: Boxplot minutos
             plt.figure(figsize=(6,4))
             sns.boxplot(x=delantero[min_col], color='#E30613')
             plt.xlabel('Minutos jugados', fontsize=12)
@@ -688,11 +685,9 @@ def radar_top6_fw(df_expand, season, minutos_minimos=1026, top_n=6):
     
     categorias = ['Gls', 'Sho', 'SoT%', 'PrgC', 'Ast', 'KP']
     
-    # Normalizar métricas
     scaler = MinMaxScaler()
     delantero[categorias] = scaler.fit_transform(delantero[categorias])
-
-    # Puntaje total
+    
     delantero['total_score'] = delantero[categorias].sum(axis=1)
 
     delantero = delantero.sort_values(by='total_score', ascending=False).reset_index(drop=True)
@@ -703,7 +698,6 @@ def radar_top6_fw(df_expand, season, minutos_minimos=1026, top_n=6):
     print("\n=== TOP DELANTEROS — RANKING ===\n")
     print(tabla_ranking.head(top_n).to_string(index=False))
 
-    # Seleccionar top defensas
     top_delanteros = delantero.sort_values(by='total_score', ascending=False).head(top_n)
 
     df_long = top_delanteros.melt(
@@ -763,7 +757,7 @@ radar_top6_fw(df_expand, season='2024-2025', minutos_minimos=1026, top_n=6)
 #Se procede a realizar el analisis de las metricas anteriormente estudiadas de manera especificas para el equipo deseado.
 
 def radar_top6_fw_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6):
-    # Filtrar por temporada, posición y minutos
+    
     delantero = df_expand[
         (df_expand['Season'] == season) &
         df_expand['Pos_jug'].str.lower().str.contains('fw')
@@ -777,7 +771,6 @@ def radar_top6_fw_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6)
 
     categorias = ['Gls', 'Sho', 'SoT%', 'PrgC', 'Ast', 'KP']
     
-    # Normalizar métricas
     scaler = MinMaxScaler()
     delantero[categorias] = scaler.fit_transform(delantero[categorias])
 
@@ -787,7 +780,6 @@ def radar_top6_fw_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6)
         print(f"No hay delanteros relevantes para el equipo {squad} en la temporada {season}.")
         return
 
-    # Puntaje total
     delantero['total_score'] = delantero[categorias].sum(axis=1)
 
     delantero = delantero.sort_values(by='total_score', ascending=False).reset_index(drop=True)
@@ -798,7 +790,6 @@ def radar_top6_fw_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6)
     print("\n=== TOP DELANTEROS — RANKING ===\n")
     print(tabla_ranking.head(top_n).to_string(index=False))
 
-    # Seleccionar top defensas
     top_delantero = delantero.sort_values(by='total_score', ascending=False).head(top_n)
 
     N = len(categorias)
@@ -856,4 +847,5 @@ def radar_top6_fw_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6)
     plt.show()
 
 #Ejecución para analizar la última temporada correspondiente a 2024-2025
+
 radar_top6_fw_squad(df_expand, season='2024-2025', squad='Real Madrid', minutos_minimos=1026, top_n=6)
