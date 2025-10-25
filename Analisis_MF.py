@@ -10,7 +10,6 @@ df.head()
 df.columns
 
 #Creamos una nueva columna en la cual separe los jugadores que cuentan con mas de una posición.
-
 df['Pos'] = df['Pos'].str.strip()
 df_expand = df.assign(Pos_jug = df['Pos'].str.split(',\s*')).explode('Pos_jug')
 df_expand['Pos'] = df_expand['Pos'].str.strip()
@@ -18,6 +17,7 @@ df_expand
 
 #ANALISIS MEDIO CENTROS - MF
 
+#Se lleva a cabo un análisis global de los jugadores cuya posición principal o secundaria es la de mediocentro
 def mf_stats_global (df_expand, season, min_col='Min', top_teams=20, mostrar_plots=True):
 
     midfielder = df_expand[
@@ -76,7 +76,6 @@ def mf_stats_global (df_expand, season, min_col='Min', top_teams=20, mostrar_plo
     print(distrib_team.head(top_teams).to_string(index=False))
 
     if mostrar_plots:
-        # Gráfico 1: Barras defensores únicos por equipo
         TopN = distrib_team.head(top_teams)
         plt.figure(figsize=(10,6))
         bars = plt.bar(TopN['Squad'], TopN['midfielder_unicos'], color='#E30613')
@@ -128,7 +127,7 @@ def mf_stats_global (df_expand, season, min_col='Min', top_teams=20, mostrar_plo
     }
     return resultados
 
-# Ejecución para temporada 2024-2025
+#Ejecución para analizar la última temporada correspondiente a 2024-2025
 mf_stats_global(df_expand, season='2024-2025', min_col='Min', mostrar_plots=True)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -300,6 +299,7 @@ mf_stats_squad(df_expand, season='2024-2025', squad='Real Madrid', mostrar_plots
 #ANALISIS DEFENSIVO - MF
 
 #Se procede a analizar caracteristicas defensivas de los medio centros.
+
 def mf_stats_def(df_expand, season, minutos_minimos, top_n = 20, mostrar_plots=True):
 
     midfielder=df_expand[
@@ -391,6 +391,7 @@ def mf_stats_def(df_expand, season, minutos_minimos, top_n = 20, mostrar_plots=T
 mf_stats_def(df_expand, season='2024-2025', minutos_minimos=1026, top_n = 20, mostrar_plots=True)
 
 #Se procede a realizar el analisis de las metricas anteriormente estudiadas de manera especificas para el equipo deseado.
+
 def mf_stats_def_squad(df_expand, season, squad, minutos_minimos, top_n = 20, mostrar_plots=True):
 
     midfielder=df_expand[
@@ -404,7 +405,6 @@ def mf_stats_def_squad(df_expand, season, squad, minutos_minimos, top_n = 20, mo
     midfielder['Relevante_30%_temporada'] = midfielder['Min'] >= minutos_minimos
 
     metricas = {
-    #Entradas y duelos
     'Entradas totales': lambda d: d['Tkl'],
     'Entradas totales / 90min': lambda d: d['Tkl'] / d['90s'],
     'Entradas ganadas totales': lambda d: d['TklW'],
@@ -412,14 +412,12 @@ def mf_stats_def_squad(df_expand, season, squad, minutos_minimos, top_n = 20, mo
     'Éxito en entradas (%)': lambda d: d['Tkl%'],
     'Entradas vs regates totales': lambda d: d['Tkl-Dri'],
     'Entradas vs regates / 90min': lambda d: d['Tkl-Dri'] / d['90s'],
-    # Zonas del campo
     'Entradas en zona defensiva totales': lambda d: d['Def 3rd'],
     'Entradas en zona defensiva / 90min': lambda d: d['Def 3rd'] / d['90s'],
     'Entradas en zona media totales': lambda d: d['Mid 3rd'],
     'Entradas en zona media / 90min': lambda d: d['Mid 3rd'] / d['90s'],
     'Entradas en zona de ataque totales': lambda d: d['Att 3rd'],
     'Entradas en zona de ataque / 90min': lambda d: d['Att 3rd'] / d['90s'],
-    # Intercepciones y recuperaciones
     'Intercepciones totales': lambda d: d['Int'],
     'Intercepciones / 90min': lambda d: d['Int'] / d['90s'],
     'Bloqueos totales': lambda d: d['Blocks'],
@@ -430,7 +428,6 @@ def mf_stats_def_squad(df_expand, season, squad, minutos_minimos, top_n = 20, mo
     'Bloqueos de pases / 90min': lambda d: d['Pass'] / d['90s'],
     'Despejes totales': lambda d: d['Clr'],
     'Despejes / 90min': lambda d: d['Clr'] / d['90s'],
-    # Duelos aéreos
     'Duelos aéreos ganados totales': lambda d: d['Aerial-W'],
     'Duelos aéreos ganados / 90min': lambda d: d['Aerial-W'] / d['90s'],
     'Duelos aéreos perdidos totales': lambda d: d['Aerial-L'],
@@ -501,6 +498,7 @@ mf_stats_def_squad(df_expand, season='2024-2025', squad='Real Madrid', minutos_m
 #ANALISIS DISCIPLINARIO - MF 
 
 #Se procede a realizar un analisis sobre las faltas concedidas y sanciones obtenidas por parte de los medio centros.
+
 def mf_stats_disc(df_expand, season, minutos_minimos, top_n=20, mostrar_plots=True):
 
     midfielder=df_expand[
@@ -576,6 +574,7 @@ def mf_stats_disc(df_expand, season, minutos_minimos, top_n=20, mostrar_plots=Tr
 mf_stats_disc(df_expand, season='2024-2025', minutos_minimos=1026, top_n=20, mostrar_plots=True)
 
 #Se procede a realizar el analisis de las metricas anteriormente estudiadas de manera especificas para el equipo deseado.
+
 def mf_stats_disc_squad(df_expand, season, squad, minutos_minimos, mostrar_plots=True):
 
     midfielder=df_expand[
@@ -589,20 +588,16 @@ def mf_stats_disc_squad(df_expand, season, squad, minutos_minimos, mostrar_plots
     midfielder['Relevante_30%_temporada'] = midfielder['Min'] >= minutos_minimos
 
     metricas = {
-    # Totales
     'Tarjetas amarillas totales': lambda d: d['CrdY'],
     'Dobles amarillas totales': lambda d: d['2CrdY'],
     'Tarjetas rojas directas totales': lambda d: d['CrdR'],
     'Tarjetas totales': lambda d: d['CrdY'] + d['CrdR'],
-    # Normalizadas por 90 min
     'Tarjetas amarillas / 90min': lambda d: d['CrdY'] / d['90s'],
     'Dobles amarillas / 90min': lambda d: d['2CrdY'] / d['90s'],
     'Tarjetas rojas / 90min': lambda d: d['CrdR'] / d['90s'],
     'Tarjetas totales / 90min': lambda d: (d['CrdY']  + d['CrdR']) / d['90s'],
-    # Relacionadas con faltas
     'Faltas cometidas / 90min': lambda d: d['Fls'] / d['90s'],
     'Faltas recibidas / 90min': lambda d: d['Fld'] / d['90s'],
-    # Métrica de eficiencia disciplinaria
     'Faltas por tarjeta': lambda d: d['Fls'] / (d['CrdY'] + d['CrdR']).replace(0, 1)
     }
     
@@ -669,6 +664,7 @@ mf_stats_disc_squad(df_expand, season='2024-2025', squad='Real Madrid', minutos_
 #ANALISIS OFENSIVO - MF
 
 #Se procede a realizar un analisis con respecto a la aportación ofensiva de los medio centros de La Liga.
+
 def mf_stats_of(df_expand, season, minutos_minimos, top_n=20, mostrar_plots=True):
 
     midfielder=df_expand[
@@ -743,6 +739,7 @@ def mf_stats_of(df_expand, season, minutos_minimos, top_n=20, mostrar_plots=True
 mf_stats_of(df_expand, season='2024-2025', minutos_minimos=1026, top_n=20, mostrar_plots=True)
 
 #Se procede a realizar el analisis de las metricas anteriormente estudiadas de manera especificas para el equipo deseado.
+
 def mf_stats_of_squad(df_expand, season, squad, minutos_minimos, mostrar_plots=True):
 
     midfielder=df_expand[
@@ -756,28 +753,22 @@ def mf_stats_of_squad(df_expand, season, squad, minutos_minimos, mostrar_plots=T
     midfielder['Relevante_30%_temporada'] = midfielder['Min'] >= minutos_minimos
 
     metricas = {
-    # Producción directa
     'Goles totales': lambda d: d['Gls'],
     'Asistencias totales': lambda d: d['Ast'],
     'G+A totales': lambda d: d['Gls'] + d['Ast'],
-    # Normalizadas a 90 min
     'Goles / 90min': lambda d: d['Gls'] / d['90s'],
     'Asistencias / 90min': lambda d: d['Ast'] / d['90s'],
     'G+A / 90min': lambda d: (d['Gls'] + d['Ast']) / d['90s'],
-    # Remates
     'Remates totales': lambda d: d['Sh'],
     'Remates / 90min': lambda d: d['Sh'] / d['90s'],
     'Remates a puerta / 90min': lambda d: d['Sot'] / d['90s'],
     'Precisión remates a puerta (%)': lambda d: d['Sot%'],
-    # Penaltis
     'Penaltis convertidos': lambda d: d['PK'],
     'Penaltis ejecutados': lambda d: d['Pkatt'],
     'Eficacia en penaltis (%)': lambda d: (d['PK'] / d['Pkatt']) if d['Pkatt'] > 0 else 0,
-    # Creación de ocasiones
     'Pases clave / 90min': lambda d: d['KP'] / d['90s'],
     'Pases al área penal / 90min': lambda d: d['PPA'] / d['90s'],
     'Centros / 90min': lambda d: d['Crs'] / d['90s'],
-    # Progresión ofensiva (aportación en construcción hacia gol)
     'Regates progresivos / 90min': lambda d: d['PrgC'] / d['90s'],
     'Pases progresivos / 90min': lambda d: d['PrgP'] / d['90s'],
     'Pases progresivos completados / 90min': lambda d: d['PrgR'] / d['90s'],
@@ -846,8 +837,9 @@ mf_stats_of_squad(df_expand, season='2024-2025', squad='Barcelona', minutos_mini
 #RADAR CHART DE LOS MEJORES 6 MEDIO CENTROS - MF
 
 #Se procede a realizar un radar chart que nos muestre los seis mejores medio centros de la liga según las categorias seleccionadas.
+
 def radar_top6_mf(df_expand, season, minutos_minimos=1026, top_n=6):
-    # Filtrar por temporada, posición y minutos
+    
     df_temp = df_expand[
         (df_expand['Season'] == season) &
         df_expand['Pos_jug'].str.lower().str.contains('mf') &
@@ -911,6 +903,7 @@ def radar_top6_mf(df_expand, season, minutos_minimos=1026, top_n=6):
 radar_top6_mf(df_expand, season='2024-2025', minutos_minimos=1026, top_n=6)
 
 #Se procede a realizar el analisis anterior estudiando de manera especificas para el equipo deseado.
+
 def radar_top6_mf_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6):
     
     midfielder = df_expand[
