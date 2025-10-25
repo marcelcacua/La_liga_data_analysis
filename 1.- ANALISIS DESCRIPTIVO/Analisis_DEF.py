@@ -901,23 +901,3 @@ def radar_top6_def_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6
 
 #Ejecución para analizar la última temporada correspondiente a 2024-2025.
 radar_top6_def_squad(df_expand, season='2024-2025', squad='Barcelona', minutos_minimos=1026, top_n=6)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
