@@ -857,6 +857,14 @@ def radar_top6_mf(df_expand, season, minutos_minimos=1026, top_n=6):
 
     df_temp['total_score'] = df_temp[categorias].sum(axis=1)
 
+    df_temp = df_temp.sort_values(by='total_score', ascending=False).reset_index(drop=True)
+    df_temp['rank'] = df_temp.index + 1
+    
+    tabla_ranking = df_temp[['rank', 'Player', 'Squad', 'Min', 'total_score'] + categorias].copy()
+    pd.set_option('display.float_format', '{:,.3f}'.format)
+    print("\n=== TOP MEDIO CENTROS — RANKING ===\n")
+    print(tabla_ranking.head(top_n).to_string(index=False))
+
     top_midfielder = df_temp.sort_values(by='total_score', ascending=False).head(top_n)
 
     N = len(categorias)
@@ -930,6 +938,14 @@ def radar_top6_mf_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6)
 
     df_temp['total_score'] = df_temp[categorias].sum(axis=1)
 
+    df_temp = df_temp.sort_values(by='total_score', ascending=False).reset_index(drop=True)
+    df_temp['rank'] = df_temp.index + 1
+    
+    tabla_ranking = df_temp[['rank', 'Player', 'Squad', 'Min', 'total_score'] + categorias].copy()
+    pd.set_option('display.float_format', '{:,.3f}'.format)
+    print("\n=== TOP MEDIO CENTROS — RANKING ===\n")
+    print(tabla_ranking.head(top_n).to_string(index=False))
+
     top_defensas = df_temp.sort_values(by='total_score', ascending=False).head(top_n)
 
     N = len(categorias)
@@ -988,3 +1004,4 @@ def radar_top6_mf_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6)
 
 #Se procede a realizar el analisis de las metricas anteriormente estudiadas de manera especificas para el equipo deseado.
 radar_top6_mf_squad(df_expand, season='2024-2025', squad='Real Madrid', minutos_minimos=1026, top_n=6)
+
