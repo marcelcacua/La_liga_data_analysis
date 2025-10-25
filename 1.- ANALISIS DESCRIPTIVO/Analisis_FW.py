@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 
-df = pd.read_excel("C:\\Users\\marce\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
+df = pd.read_excel("C:\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
 df.head()
 df.columns
 
@@ -849,3 +849,4 @@ def radar_top6_fw_squad(df_expand, season, squad, minutos_minimos=1026, top_n=6)
 #Ejecución para analizar la última temporada correspondiente a 2024-2025
 
 radar_top6_fw_squad(df_expand, season='2024-2025', squad='Real Madrid', minutos_minimos=1026, top_n=6)
+
