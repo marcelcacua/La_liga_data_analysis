@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 
-df = pd.read_excel("C:\\Users\\marce\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
+df = pd.read_excel("C:\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
 df.head()
 
 df['Pos'] = df['Pos'].str.strip()
@@ -71,13 +71,11 @@ def radar_jugador(df_expand, season, jugador):
                              subplot_kw=dict(polar=True))
 
     if len(posiciones) == 1:
-        axes = [axes]  # Para iterar aunque sea un solo gráfico
+        axes = [axes] 
 
-    # Crear radar para cada posición detectada
     for ax, pos in zip(axes, posiciones):
         categorias = categorias_por_posicion[pos]
 
-        # Filtrar jugadores de esa posición y temporada
         df_pos = df_expand[
             (df_expand['Season'] == season) &
             (df_expand['Pos_jug'].str.lower().str.contains(pos))
@@ -88,7 +86,6 @@ def radar_jugador(df_expand, season, jugador):
 
         jugador_row = df_pos[df_pos['Player'].str.lower() == jugador.lower()].iloc[0]
 
-        # Mostrar valores escalados en tabla
         tabla_stats = pd.DataFrame({
         'Categoría': categorias,
         'Valor escalado (0-1)': jugador_row[categorias].values
@@ -101,23 +98,19 @@ def radar_jugador(df_expand, season, jugador):
         values = jugador_row[categorias].tolist()
         values += values[:1]
 
-            # Ángulos
         N = len(categorias)
         angles = [n/float(N) * 2 * np.pi for n in range(N)]
         angles += angles[:1]
 
         color_pos = colores[pos]
 
-            # Dibujar radar
         ax.plot(angles, values, color= color_pos, linewidth=2)
         ax.fill(angles, values, color=color_pos, alpha=0.25)
 
-            # Resaltar mejor valor
         best_idx = np.argmax(values[:-1])
         ax.plot(angles[best_idx], values[best_idx], 'o',
                     color='#333333', markersize=6, markeredgecolor='black')
 
-            # Configuración estética
         ax.set_xticks(angles[:-1])
         ax.set_xticklabels(categorias, fontsize=11, fontweight='bold', color='#333333')
         ax.set_yticklabels([])
@@ -139,4 +132,3 @@ def radar_jugador(df_expand, season, jugador):
 #Ejecución para analizar la última temporada correspondiente a 2024-2025 de Raphinha y Vinicius Jr.
 radar_jugador(df_expand, season='2024-2025', jugador='Raphinha')
 radar_jugador(df_expand, season='2024-2025', jugador='Vinicius Júnior')
-
