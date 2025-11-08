@@ -15,7 +15,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score 
 import plotly.express as px
 
-df = pd.read_excel("C:\\Users\\marce\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
+df = pd.read_excel("C:\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
 
 df['Pos'] = df['Pos'].str.strip()
 df_expand = df.assign(Pos_jug = df['Pos'].str.split(',\s*')).explode('Pos_jug')
@@ -237,3 +237,4 @@ def analyze_team_styles_by_category(df, style_metrics, season_filter, n_componen
     return df_styles_scaled
 
 df_results = analyze_team_styles_by_category(df, style_metrics, season_filter='2024-2025', n_components=3)
+
