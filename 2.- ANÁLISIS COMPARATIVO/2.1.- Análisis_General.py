@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_excel("C:\\Users\\marce\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
+df = pd.read_excel("C:\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
 
 df['Pos'] = df['Pos'].str.strip()
 df_expand = df.assign(Pos_jug = df['Pos'].str.split(',\s*')).explode('Pos_jug')
@@ -48,8 +48,8 @@ def global_stats_laliga(df, squad):
     else:
         print(f'Se realiza el Analisis Global para toda La Liga')
     
-    #Tendencia de goles y asistencias
-
+    #TENDENCIAS DE GOLES Y ASISTENCIAS
+    
     trend = df.groupby('Season').agg({
         'Gls' : 'sum',
         'Ast' : 'sum',
@@ -73,7 +73,7 @@ def global_stats_laliga(df, squad):
     sns.despine()
     plt.show()
 
-    #Variación sobre el estilo de pase
+    #VARIACIÓN SOBRE EL TIPO DE PASE.
 
     style = df.groupby("Season").agg({
     "Cmp-C":"sum","Att-C":"sum",
@@ -97,7 +97,7 @@ def global_stats_laliga(df, squad):
     plt.legend(loc='best')
     plt.show()
 
-    #Variación sobre la progresión del juego.
+    #VARIACIÓN SOBRE LA PROGRESIÓN DEL JUEGO OFENSIVO.
 
     prog = df.groupby("Season").agg({"PrgP":"mean","PrgC":"mean"}).reset_index()
     plt.figure(figsize=(8,5))
@@ -130,7 +130,7 @@ def global_stats_laliga(df, squad):
         plt.legend(loc='upper left')
         plt.show()
 
-    #Variación sobre las faltas realizadas y recibidas
+    #VARIACIÓN SOBRE FALTAS COMETIDAS Y RECIBIDAS.
 
     disc = df.groupby("Season").agg({"Fls":"sum","Fld":"sum"}).reset_index()
     plt.figure(figsize=(10,6))
@@ -149,6 +149,5 @@ def global_stats_laliga(df, squad):
 
     print("✅ Análisis completo generado.")
 
-global_stats_laliga(df, squad='')
 global_stats_laliga(df, squad='Getafe')
 global_stats_laliga(df, squad='Barcelona')
