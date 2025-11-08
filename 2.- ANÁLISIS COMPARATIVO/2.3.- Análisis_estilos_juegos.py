@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 
-df = pd.read_excel("C:\\Users\\marce\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
+df = pd.read_excel("C:\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
 
 df['Pos'] = df['Pos'].str.strip()
 df_expand = df.assign(Pos_jug = df['Pos'].str.split(',\s*')).explode('Pos_jug')
@@ -70,13 +70,11 @@ def radar_style_squads(team1, season1, team2, season2, color1=LALIGA_COLORS['1']
     angles = [n / float(N) * 2 * np.pi for n in range(N)]
     angles += angles[:1]
 
-    # Valores de cada equipo
     values1 = team_styles_scaled.loc[(team1, season1)].values.flatten().tolist()
     values1 += values1[:1]
     values2 = team_styles_scaled.loc[(team2, season2)].values.flatten().tolist()
     values2 += values2[:1]
 
-    # Crear figura con dos subplots (lado a lado)
     fig, axes = plt.subplots(1, 2, figsize=(12,6), subplot_kw=dict(polar=True))
     fig.patch.set_facecolor("white")
 
@@ -100,9 +98,9 @@ def radar_style_squads(team1, season1, team2, season2, color1=LALIGA_COLORS['1']
     ax.yaxis.grid(True, linestyle="--", alpha=0.4)
     ax.xaxis.grid(True, linestyle="--", alpha=0.4)
 
-    # Ajustar y mostrar
     plt.suptitle("Comparación de Estilos de Juego por Temporada", size=16, fontweight="bold")
     plt.tight_layout()
     plt.show()
 
 radar_style_squads(team1="Barcelona", season1='2024-2025', team2="Real Madrid", season2='2024-2025', color1=LALIGA_COLORS["1"], color2=LALIGA_COLORS["2"])
+
