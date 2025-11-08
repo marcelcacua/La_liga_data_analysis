@@ -11,7 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 
-df = pd.read_excel("C:\\Users\\marce\\Desktop\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
+df = pd.read_excel("C:\\PROYECTO LA LIGA\\OFICIAL\\LA_LIGA_DATOS_JUG_OFICIAL.xlsx")
 
 df['Pos'] = df['Pos'].str.strip()
 df_expand = df.assign(Pos_jug = df['Pos'].str.split(',\s*')).explode('Pos_jug')
@@ -166,3 +166,4 @@ def evolucion_jugador(df_expand, jugador):
 
 evolucion_jugador(df_expand, 'Vinicius Júnior')
 evolucion_jugador(df_expand, 'Lamine Yamal')
+
