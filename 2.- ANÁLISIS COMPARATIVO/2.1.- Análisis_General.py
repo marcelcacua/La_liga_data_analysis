@@ -1,3 +1,12 @@
+#1.- ANÁLISIS GENERAL.
+
+# Este análisis estudia la evolución del rendimiento ofensivo y táctico en LaLiga
+# durante las últimas cinco temporadas. Se examinan tendencias en goles, asistencias,
+# distribución de tipos de pase, juego progresivo (pases y conducciones progresivas),
+# acciones defensivas por zonas del campo y la evolución de faltas cometidas y recibidas.
+# El estudio se realiza tanto a nivel global como por equipo, con el objetivo de
+# identificar patrones y posibles estilos de juego dentro de la competición.
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -8,15 +17,6 @@ df['Pos'] = df['Pos'].str.strip()
 df_expand = df.assign(Pos_jug = df['Pos'].str.split(',\s*')).explode('Pos_jug')
 df_expand['Pos'] = df_expand['Pos'].str.strip
 df_expand
-
-#1.- ANÁLISIS GENERAL.
-
-# Este análisis estudia la evolución del rendimiento ofensivo y táctico en LaLiga
-# durante las últimas cinco temporadas. Se examinan tendencias en goles, asistencias,
-# distribución de tipos de pase, juego progresivo (pases y conducciones progresivas),
-# acciones defensivas por zonas del campo y la evolución de faltas cometidas y recibidas.
-# El estudio se realiza tanto a nivel global como por equipo, con el objetivo de
-# identificar patrones y posibles estilos de juego dentro de la competición.
 
 sns.set_theme(style="whitegrid")
 plt.rcParams.update({
@@ -151,3 +151,4 @@ def global_stats_laliga(df, squad):
 
 global_stats_laliga(df, squad='Getafe')
 global_stats_laliga(df, squad='Barcelona')
+
